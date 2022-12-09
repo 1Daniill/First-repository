@@ -9,21 +9,20 @@ $Second_cubeHuman=mt_rand(1,6);
 $First_cubeComp=mt_rand(1,6);
 $Second_cubeComp=mt_rand(1,6);
 
-echo "У человека выпало $First_cubeHuman и $Second_cubeHuman , 
-а у компьютера выпало $First_cubeComp и $Second_cubeComp \n\n" ;
+echo "У человека выпало $First_cubeHuman и $Second_cubeHuman,а у компьютера выпало $First_cubeComp и $Second_cubeComp \n\n" ;
 
 $a= $First_cubeHuman + $Second_cubeHuman;
 $b= $First_cubeComp + $Second_cubeComp;
-echo "У человека выпало $a\n";
-echo "У компьютера выпало $b\n\n";
+echo "Общее количество очков, которое выпало у человека $a\n";
+echo "Общее количество очков, которое выпало у компьютера $b\n\n";
 
 
 if ($a > $b) {
-	echo "Поэтому человек победил"; 
-	} elseif ($a < $b) {
-	echo "Поэтому компьютер победил";
-	} elseif ($a == $b) {
-	echo "Поэтому победила дружба" ;
-		exit();}
+        echo "Поэтому человек победил";
+        } elseif ($a < $b) {
+        echo "Поэтому компьютер победил";
+        } elseif ($a == $b) {
+        echo "Поэтому победила дружба" ;
+                exit();}
 
 ?>
