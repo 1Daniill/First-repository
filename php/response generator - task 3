@@ -14,8 +14,6 @@ $c = array(
 	
 $question = "Сегодня удачный день, чтобы научиться новому? \n";
 $random = array_rand ( $c, 1) ;
-$answer = $random;
 echo "$question";
 echo "Выпадает число $random, а это значит $c[$random].";
-
 ;
