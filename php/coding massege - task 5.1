@@ -39,11 +39,12 @@ $code = array(
     ')'	=>	'}',
     '('	=>	'{',
     '"'	=>	'/',
-    '?'	=>	'|',
+    '.' =>      '^&',
 );
 
-$text = " товарищ майор будет не рад ";
-$cipher = strtr($text, $code);
+$text = " Товарищ майор будет не рад. ";
+$low=mb_strtolower($text); 
+$cipher = strtr($low, $code);
 
 echo "Оригинал: {$text}\n
 Шифровка: {$cipher}\n";
