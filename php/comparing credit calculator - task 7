@@ -1,0 +1,40 @@
+<?php
+ error_reporting(-1);
+/*Задача: написать кредитный калькулятор для сравнения разных банков, используя функцию. 
+Кредит без первоначального взноса, ежемесячная плата 3640, условия банков:
+HomeCredit - 4% и 500 р комиссии в месяц
+AlfaBank - 3% и 1000 р комиссии в месяц
+SberBank - 2% в месяц, без комиссии, но с платой в размере 7777 р за открытие счета */
+
+
+function totalCosts($price, $percent, $comission, $monthlyPaid){
+for ($a = $price, $i = 0; $a > 0; $a=(($a*$percent)+$comission)-$monthlyPaid,  $i++)   {
+
+          $b=(($a*($percent-1))+$comission);
+          $total_sum += $b;
+    }
+    $c=$total_sum+$price;
+    $f=round ($c, 2);
+
+	return $f;
+}
+$price=39999;
+$monthlyPaid=3640;
+$homeCreditTotal=totalCosts($price, 1.04, 500, $monthlyPaid);
+echo "Общая стоимость товара, взятого в банке HomeCredit равна $homeCreditTotal \n";
+
+$alfaBankTotal=totalCosts($price, 1.03, 1000, $monthlyPaid);
+echo "Общая стоимость товара, взятого в банке AlfaBank равна $alfaBankTotal \n";
+
+$sberbankTotal=totalCosts($price+7777, 1.02, 0, $monthlyPaid);
+echo "Общая стоимость товара, взятого в банке SberBank равна $sberbankTotal \n\n";
+
+if ($homeCreditTotal<$alfaBankTotal and $homeCreditTotal<$sberbankTotal){
+	echo "HomeCredit имеет наиболее выгодное предложение.";
+} elseif ($alfaBankTotal<$homeCreditTotal and $alfaBankTotal<$sberbankTotal){
+	echo "AlfaBank имеет наиболее выгодное предложение.";
+} elseif ($sberbankTotal<$alfaBankTotal and $sberbankTotal<$homeCreditTotal){
+	echo "SberBank имеет наиболее выгодное предложение.";
+}
+
+?>
