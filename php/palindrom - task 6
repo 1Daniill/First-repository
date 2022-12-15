@@ -1,0 +1,25 @@
+<?php
+error_reporting(-1);
+mb_internal_encoding("utf-8");
+/*Задание: напиши программу, проверяющую, является ли строка палиндромом.*/
+
+$text = "Аргентина манит негра";
+$low=mb_strtolower($text); /* все строчные*/
+$a= str_replace(" ", "", $low); /* убрать пробелы*/
+
+$length=mb_strlen($a); /* поcчитать длину*/
+$halfLength=floor($length/2); 
+
+for ($i=0; $i<$halfLength;$i++){
+$symbol1=mb_substr($a,$i,1);        /*поочередно с первой буквы*/
+$symbol2=mb_substr($a, (-$i-1), 1); /*поочередно с последней буквы*/
+echo "$symbol1 $symbol2\n";
+if ($symbol1!=$symbol2){     /*сравнить буквы между собой*/
+	echo "Не палиндром";
+	break;}
+}
+
+if ($i==$halfLength){   /*Если общее количество циклов равно максимальному, значит алгоритм дошёл до конца*/
+	echo "Палиндром";}
+
+?>
