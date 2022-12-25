@@ -1,0 +1,125 @@
+<?php
+mb_internal_encoding('utf-8');
+/*Во многих серьезных документах принято писать денежные суммы цифрами и прописью, вот так:
+«триста двадцать шесть (326) рублей», «две тысячи один (2001) рубль». Давай избавим людей от
+рутинной работы, и поручим склонение слов роботам и языку PHP.*/
+ 
+ 
+$number = 767864;
+
+$spelling = array(
+    0 => 'ноль', 10 => 'десять', 100 => 'сто',
+    1 => 'один', 11 => 'одиннадцать', 20 => 'двадцать', 200 => 'двести',
+    2 => 'два', 12 => 'двенадцать', 30 => 'тридцать', 300 => 'триста',
+    3 => 'три', 13 => 'тринадцать', 40 => 'сорок', 400 => 'четыреста',
+    4 => 'четыре', 14 => 'четырнадцать', 50 => 'пятьдесят', 500 => 'пятьсот',
+    5 => 'пять', 15 => 'пятнадцать', 60 => 'шестьдесят', 600 => 'шестьсот',
+    6 => 'шесть', 16 => 'шестнадцать', 70 => 'семьдесят', 700 => 'семьсот',
+    7 => 'семь', 17 => 'семнадцать', 80 => 'восемьдесят', 800 => 'восемьсот',
+    8 => 'восемь', 18 => 'восемнадцать', 90 => 'девяносто', 900 => 'девятьсот',
+    9 => 'девять', 19 => 'девятнадцать',
+    1000 => 'одна тысяча',  2000 => 'две тысячи',3000 => 'три тысячи',4000 => 'четыре тысячи',
+    5000 => 'пять тысяч',6000 => 'шесть тысяч',7000 => 'семь тысяч',8000 => 'восемь тысяч',
+    9000 => 'девять тысяч', 10000 => 'десять тысяч',11000 => 'одиннадцать тысяч',
+    12000 => 'двенадцать тысяч',13000 => 'тринадцать тысяч',14000 => 'четыренадцать тысяч',
+    15000 => 'пятнадцать тысяч',16000 => 'шестнадцать тысяч',17000 => 'семнадцать тысяч',
+    18000 => 'восемнадцать тысяч',19000 => 'девятнадцать тысяч',20000 => 'двадцать',30000 => 'тридцать',
+    40000 => 'сорок',50000 => 'пятдесят',60000 => 'шестьдесят',70000 => 'семдесят',80000 => 'восемдесят',
+    90000 => 'девяносто',100000 => 'сто', 200000=> 'двести', 300000 => 'триста',400000 => 'четыреста',
+    500000 => 'пятьсот', 600000 => 'шестьсот', 700000 => 'семьсот',800000 => 'восемьсот',
+    900000 => 'девятьсот',
+);
+ 
+ 
+$numberToString = (string)$number;         
+$lengthNumber = strlen($numberToString);   
+
+$result = [];
+for ($i = 0; $i < $lengthNumber; $i++) {
+    $result[] = (int)$numberToString[$i];
+}
+
+foreach ($result as $key => $item) {
+	$key = $key + 1;
+// var_dump ($key);
+//var_dump ($item);
+$nulls = $lengthNumber - $key;
+//var_dump ($nulls);
+	echo "\n";
+	
+	 for ($i = 1; $i <= $nulls; $i++) {
+        (string)$item.= '0';
+        }
+     echo $item; 
+     echo " $spelling[$item]";
+     $allSpell.="$spelling[$item] ";
+}
+
+
+   echo "\n";
+   
+   
+
+
+
+ 
+if (end($result) < 10) {
+    end($result); //единицы
+    $e = (current($result));
+}
+ 
+ 
+prev($result); //десятки
+if (current($result) > 0) {
+    $d = ((current($result) * 10));
+}
+ 
+ 
+prev($result); //сотни
+if (current($result) > 0) {
+    $h = ((current($result) * 100));
+}
+ 
+prev($result); //тысячи
+if (current($result) > 0) {
+    $t = ((current($result)*1000));
+}
+ 
+prev($result); //десятки тысяч
+if (current($result) > 0) {
+    $tt = ((current($result) * 10000));
+}
+
+prev($result); //десятки тысяч
+if (current($result) > 0) {
+    $ttt = ((current($result) * 100000));
+}
+ 
+echo "Способ первый: ";
+ 
+$word1 = "рубль";
+$word2 = "рубля";
+$word5 = "рублей";
+/* Концовка: 1 рубль, 2 рубля, 5 рублей */
+$last1Digits = $number % 10;
+if ($last1Digits == 0 or $last1Digits >= 5) {
+    echo "$number($spelling[$ttt] $spelling[$tt] $spelling[$t] $spelling[$h] $spelling[$d] $spelling[$e]) $word5 \n";
+} elseif ($last1Digits == 1) {
+    echo "$number($spelling[$ttt] $spelling[$tt] $spelling[$t] $spelling[$h] $spelling[$d] $spelling[$e]) $word1 \n";
+} elseif ($last1Digits >= 2 and $last1Digits < 5) {
+    echo "$number($spelling[$ttt] $spelling[$tt] $spelling[$t] $spelling[$h] $spelling[$d] $spelling[$e]) $word2 \n";
+}
+
+ 
+echo "Способ второй: ";
+ if ($last1Digits == 0 or $last1Digits >= 5) {
+    echo "$number($allSpell)$word5 \n";
+} elseif ($last1Digits == 1) {
+      echo "$number($allSpell)$word1 \n";
+} elseif ($last1Digits >= 2 and $last1Digits < 5) {
+      echo "$number($allSpell)$word2 \n";
+}
+ 
+ 
+ 
+ 
