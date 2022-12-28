@@ -1,3 +1,6 @@
+// Способ первый
+
+
 <?php
 mb_internal_encoding('utf-8');
 
@@ -51,5 +54,68 @@ for ($i = 0; $i < $inputLength; $i++) {
 
 }
 
+
+?>
+
+
+
+
+// Способ второй
+
+
+<?php
+mb_internal_encoding('utf-8');
+
+$input = '6*4-6/2=';
+var_dump($input);
+$inputLength = mb_strlen($input);
+
+$number = 0;
+$result = 0;
+$op = '';
+$digit = '';
+
+for ($i = 0; $i < $inputLength; $i++) {
+
+    $char = mb_substr($input, $i, 1);
+    echo "Цикл $i $char \n ";
+
+    if ($char == '*' || $char == '+' || $char == '-' || $char == '=' || $char == '/') {
+        $number = floatval($digit);
+        if ($result == 0) {
+            $result = $number;
+        }
+
+
+        switch ($op) {
+            case '+':
+                echo($result += $number);
+                '<br/>';
+                break;
+            case '-':
+                echo($result -= $number);
+                '<br/>';
+                break;
+            case '*':
+                echo($result *= $number);
+                '<br/>';
+                break;
+            case '/':
+                echo($result /= $number);
+                '<br/>';
+                break;
+        }
+        $op = $char;
+        $digit = '';
+
+    } elseif
+    (is_numeric($char)) {
+        $digit .= $char;
+    } else {
+        echo "Неверно заданное значение";
+    }
+}
+
+echo "\n Ответ: $input $result ";
 
 ?>
