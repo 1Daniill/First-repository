@@ -1,0 +1,55 @@
+<?php
+mb_internal_encoding('utf-8');
+
+
+$input = '20*3-15+5=';
+var_dump($input);
+$inputLength = mb_strlen($input);
+
+$number = 0;
+$result = 0;
+$op = '';
+$digit = '';
+
+
+for ($i = 0; $i < $inputLength; $i++) {
+
+    $char = mb_substr($input, $i, 1);
+    echo "Цикл $i $char \n ";
+    if ($char == '*' || $char == '+' || $char == '-' || $char == '=' || $char == '/') {
+        $number = floatval($digit);
+
+        if ($op == '*') {
+            $result *= $number;
+        }
+        if ($op == '+') {
+            $result += $number;
+            echo "\n";
+        }
+        if ($op == '-') {
+            $result -= $number;
+
+        }
+        if ($op == '/') {
+            $result /= $number;
+        }
+        if ($result == 0) {
+            $result = $number;
+        }
+        if ($char == '=') {
+            exit("Ответ $input $result");
+        }
+        $op = $char;
+        $digit = '';
+
+    } elseif (is_numeric($char)) {
+        $digit .= $char;
+    } else {
+        echo "Неверно заданное значение";
+    }
+
+
+}
+
+
+?>
