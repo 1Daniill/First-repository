@@ -1,0 +1,162 @@
+<?php
+mb_internal_encoding('utf-8');
+
+
+$number = 362800;
+$a = $number % 100; //кратна ли запрашиваемая сумма минимальному номиналу банкомата
+echo "Запрашиваемая сумма $number\n";
+
+$bills = [       //купюры в банкомате
+    100 => 23,
+    500 => 290,
+    1000 => 89,
+    5000 => 110,
+];
+foreach ($bills as $nominal => $count) {
+    $amount = $nominal * $count;
+    $total += $amount;
+}
+$h100 = 100 * $bills[100];
+$f500 = 500 * $bills[500];
+$t1000 = 1000 * $bills[1000];
+$ft5000 = 5000 * $bills[5000];
+echo "Сумма в  банкомате $total\n";
+
+$spelling = array(
+    10 => 'десять', 100 => 'сто',
+    1 => 'один', 11 => 'одиннадцать', 20 => 'двадцать', 200 => 'двести',
+    2 => 'два', 12 => 'двенадцать', 30 => 'тридцать', 300 => 'триста',
+    3 => 'три', 13 => 'тринадцать', 40 => 'сорок', 400 => 'четыреста',
+    4 => 'четыре', 14 => 'четырнадцать', 50 => 'пятьдесят', 500 => 'пятьсот',
+    5 => 'пять', 15 => 'пятнадцать', 60 => 'шестьдесят', 600 => 'шестьсот',
+    6 => 'шесть', 16 => 'шестнадцать', 70 => 'семьдесят', 700 => 'семьсот',
+    7 => 'семь', 17 => 'семнадцать', 80 => 'восемьдесят', 800 => 'восемьсот',
+    8 => 'восемь', 18 => 'восемнадцать', 90 => 'девяносто', 900 => 'девятьсот',
+    9 => 'девять', 19 => 'девятнадцать',
+    1000 => 'одна тысяча', 2000 => 'две тысячи', 3000 => 'три тысячи', 4000 => 'четыре тысячи',
+    5000 => 'пять тысяч', 6000 => 'шесть тысяч', 7000 => 'семь тысяч', 8000 => 'восемь тысяч',
+    9000 => 'девять тысяч', 10000 => 'десять тысяч', 11000 => 'одиннадцать тысяч',
+    12000 => 'двенадцать тысяч', 13000 => 'тринадцать тысяч', 14000 => 'четыренадцать тысяч',
+    15000 => 'пятнадцать тысяч', 16000 => 'шестнадцать тысяч', 17000 => 'семнадцать тысяч',
+    18000 => 'восемнадцать тысяч', 19000 => 'девятнадцать тысяч', 20000 => 'двадцать', 30000 => 'тридцать',
+    40000 => 'сорок', 50000 => 'пятдесят', 60000 => 'шестьдесят', 70000 => 'семдесят', 80000 => 'восемдесят',
+    90000 => 'девяносто', 100000 => 'сто', 200000 => 'двести', 300000 => 'триста', 400000 => 'четыреста',
+    500000 => 'пятьсот', 600000 => 'шестьсот', 700000 => 'семьсот', 800000 => 'восемьсот',
+    900000 => 'девятьсот',
+);
+
+
+$numberToString = (string)$number;
+$lengthNumber = strlen($numberToString);
+
+$result = [];
+for ($i = 0; $i < $lengthNumber; $i++) {
+    $result[] = (int)$numberToString[$i];
+}
+
+foreach ($result as $key => $item) {
+    $key = $key + 1;
+    $nulls = $lengthNumber - $key;
+    for ($i = 1; $i <= $nulls; $i++) {
+        (string)$item .= '0';
+    }
+
+    $allSpell .= "$spelling[$item] ";
+}
+
+echo "\n";
+
+$word1 = "рубль";
+$word2 = "рубля";
+$word5 = "рублей";
+$last1Digits = $number % 10;
+
+if ($a != 0) {
+
+    $regexp='/  +/ui';  //ищет много пробелов
+    $replacement="";
+    $r = preg_replace( $regexp , $replacement , $allSpell);
+
+    echo "Сумма: ";
+    if ($last1Digits == 0 or $last1Digits >= 5) {
+        echo "$number($r)$word5 ";
+    } elseif ($last1Digits == 1) {
+        echo "$number($r)$word1 ";
+    } elseif ($last1Digits >= 2 and $last1Digits < 5) {
+        echo "$number($r)$word2 ";
+    }
+    echo "\nВыдача невозможна. Пожалуйста введите сумму, кратную 100.";
+
+} elseif ($number > $total) {
+    $regexp='/  +/ui';  //ищет много пробелов
+    $replacement="";
+    $r = preg_replace( $regexp , $replacement , $allSpell);
+    echo "Сумма: ";
+    if ($last1Digits == 0 or $last1Digits >= 5) {
+        echo "$number($r)$word5 ";
+    } elseif ($last1Digits == 1) {
+        echo "$number($r)$word1 ";
+    } elseif ($last1Digits >= 2 and $last1Digits < 5) {
+        echo "$number($r)$word2 ";
+    }
+    echo "\nВыдача невозможна. Запрашиваемая сумма превышает количество наличности в банкомате. ";
+
+} elseif ($a == 0 and $number < $total) {
+    $needed5000 = floor($number / 5000);
+    if ($needed5000 >= $bills[5000]) {
+        $ostatok = $number - (5000 * $bills[5000]);
+    } elseif ($needed5000 < $bills[5000]) {
+        $ostatok = $number - (5000 * $needed5000);
+    }
+
+    $needed1000 = floor($ostatok / 1000);
+    if ($needed1000 >= $bills[1000]) {
+        $needed1000 = $ostatok - (1000 * $bills[1000]);
+    } elseif ($needed1000 < $bills[1000]) {
+        $ostatok = $ostatok - (1000 * $needed1000);
+    }
+
+    $needed500 = floor($ostatok / 500);
+    if ($needed500 >= $bills[500]) {
+        $needed500 = $ostatok - (500 * $bills[500]);
+    } elseif ($needed500 < $bills[500]) {
+        $ostatok = $ostatok - (500 * $needed500);
+    }
+    $needed100 = floor($ostatok / 100);
+    if ($needed100 >= $bills[100]) {
+        $needed100 = $ostatok - (100 * $bills[100]);
+    } elseif ($needed100 < $bills[100]) {
+        $ostatok = $ostatok - (100 * $needed100);
+    }
+
+    $allSpell = str_replace("десять тысяч одна тысяча", "одиннадцать тысяч", $allSpell);
+    $allSpell = str_replace("десять тысяч две тысячи", "двенадцать тысяч", $allSpell);
+    $allSpell = str_replace("десять тысяч три тысячи", "тринадцать тысяч", $allSpell);
+    $allSpell = str_replace("десять тысяч четыре тысячи", "четырнадцать тысяч", $allSpell);
+    $allSpell = str_replace("десять тысяч пять тысяч", "пятнадцать тысяч", $allSpell);
+    $allSpell = str_replace("десять тысяч шесть тысяч", "шестнадцать тысяч", $allSpell);
+    $allSpell = str_replace("десять тысяч семь тысяч", "семнадцать тысяч", $allSpell);
+    $allSpell = str_replace("десять тысяч восемь тысяч", "восемнадцать тысяч", $allSpell);
+    $allSpell = str_replace("десять тысяч девять тысяч", "девятнадцать тысяч", $allSpell);
+
+
+
+
+    $regexp='/  +/ui';  //ищет много пробелов
+    $replacement="";
+    $r = preg_replace( $regexp , $replacement , $allSpell);
+
+    echo "Сумма: ";
+    if ($last1Digits == 0 or $last1Digits >= 5) {
+        echo "$number($r)$word5 ";
+    } elseif ($last1Digits == 1) {
+        echo "$number($r)$word1 ";
+    } elseif ($last1Digits >= 2 and $last1Digits < 5) {
+        echo "$number($r)$word2 ";
+    }
+
+    echo "\nВыдача возможна, число купюр: \n$needed5000 x 5000  $needed1000 x 1000   $needed500 x 500  $needed100 x 100 ";
+
+}
+?>
+
